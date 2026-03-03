@@ -186,6 +186,52 @@ function renderAttachmentPreview(props: ChatProps) {
   `;
 }
 
+const AGI_BLUEPRINT_PROMPTS = [
+  {
+    label: "Define mission",
+    prompt:
+      "Help me define a bounded mission for an advanced AI assistant. Include goals, explicit non-goals, success metrics, and safety constraints.",
+  },
+  {
+    label: "Design architecture",
+    prompt:
+      "Design a modular architecture for a highly capable AI system, including planner, tool-use sandbox, memory, and policy guardrails.",
+  },
+  {
+    label: "Threat model",
+    prompt:
+      "Create a threat model for this AI system with misuse scenarios, mitigation controls, and auditing checks.",
+  },
+];
+
+function renderAgiBlueprintPanel(props: ChatProps) {
+  return html`
+    <section class="agi-blueprint" aria-label="AGI blueprint starter">
+      <div>
+        <p class="agi-blueprint__eyebrow">Blueprint studio</p>
+        <h3>Designing a "do-anything" agent safely</h3>
+        <p>
+          No real system can safely do <em>absolutely anything</em>. Start from constrained capabilities,
+          testable objectives, and hard guardrails.
+        </p>
+      </div>
+      <div class="agi-blueprint__actions">
+        ${AGI_BLUEPRINT_PROMPTS.map(
+          (entry) => html`
+            <button
+              class="btn agi-blueprint__chip"
+              type="button"
+              @click=${() => props.onDraftChange(entry.prompt)}
+            >
+              ${entry.label}
+            </button>
+          `,
+        )}
+      </div>
+    </section>
+  `;
+}
+
 export function renderChat(props: ChatProps) {
   const canCompose = props.connected;
   const isBusy = props.sending || props.stream !== null;
@@ -369,6 +415,7 @@ export function renderChat(props: ChatProps) {
       }
 
       <div class="chat-compose">
+        ${renderAgiBlueprintPanel(props)}
         ${renderAttachmentPreview(props)}
         <div class="chat-compose__row">
           <label class="field chat-compose__field">
