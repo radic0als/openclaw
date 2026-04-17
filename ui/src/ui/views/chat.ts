@@ -186,6 +186,69 @@ function renderAttachmentPreview(props: ChatProps) {
   `;
 }
 
+const PROMPT_STARTERS = [
+  {
+    label: "Moonshot brief",
+    prompt:
+      "Draft a moonshot spec for an assistant that can orchestrate complex workflows across tools and channels, including mission, non-goals, constraints, and measurable success metrics.",
+  },
+  {
+    label: "Agent architecture",
+    prompt:
+      "Design a multi-agent architecture for a high-autonomy assistant: planner, researcher, executor, reviewer, and memory layers. Include trade-offs and failure containment.",
+  },
+  {
+    label: "Autonomy guardrails",
+    prompt:
+      "Create a guardrail policy for an ambitious agent system, covering risky actions, approval points, sandboxing, tool allowlists, monitoring, and rollback triggers.",
+  },
+];
+
+const PLANNING_SCAFFOLD = `Design an ambitious "do-anything-style" assistant while keeping strict safety boundaries.
+
+Provide:
+1. North-star mission, non-goals, and measurable success criteria
+2. Multi-agent architecture (planner, researcher, executor, reviewer)
+3. Tool permissions model, sandbox boundaries, and escalation rules
+4. Memory strategy (short-term context, long-term retrieval, data retention)
+5. Failure modes, abuse scenarios, and layered guardrails
+6. Eval suite (quality, safety, latency, cost) with pass/fail thresholds
+7. Rollout plan (canary, observability, rollback, incident response)`;
+
+function renderPromptStarters(props: ChatProps) {
+  return html`
+    <section class="prompt-starter" aria-label="Prompt starters">
+      <div>
+        <p class="prompt-starter__eyebrow">AGI Studio</p>
+        <h3>Think bigger than a single prompt</h3>
+        <p>
+          Start with ambitious system prompts: mission, architecture, autonomy, and guardrails.
+        </p>
+      </div>
+      <div class="prompt-starter__actions">
+        ${PROMPT_STARTERS.map(
+          (entry) => html`
+            <button
+              class="btn prompt-starter__chip"
+              type="button"
+              @click=${() => props.onDraftChange(entry.prompt)}
+            >
+              ${entry.label}
+            </button>
+          `,
+        )}
+        <button
+          class="btn primary prompt-starter__chip prompt-starter__chip--primary"
+          type="button"
+          @click=${() => props.onDraftChange(PLANNING_SCAFFOLD)}
+        >
+          Insert full template
+        </button>
+      </div>
+    </section>
+  `;
+}
+
 export function renderChat(props: ChatProps) {
   const canCompose = props.connected;
   const isBusy = props.sending || props.stream !== null;
@@ -199,6 +262,8 @@ export function renderChat(props: ChatProps) {
   };
 
   const hasAttachments = (props.attachments?.length ?? 0) > 0;
+  const showPromptStarters =
+    props.connected && !props.draft.trim() && !hasAttachments && props.messages.length === 0;
   const composePlaceholder = props.connected
     ? hasAttachments
       ? "Add a message or paste more images..."
@@ -369,6 +434,7 @@ export function renderChat(props: ChatProps) {
       }
 
       <div class="chat-compose">
+        ${showPromptStarters ? renderPromptStarters(props) : nothing}
         ${renderAttachmentPreview(props)}
         <div class="chat-compose__row">
           <label class="field chat-compose__field">

@@ -1143,6 +1143,67 @@
   background: transparent;
 }
 
+.prompt-starter {
+  margin-bottom: 12px;
+  padding: 14px;
+  border-radius: var(--radius-xl);
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+  background:
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--accent) 24%, transparent),
+      transparent 52%
+    ),
+    linear-gradient(145deg, color-mix(in srgb, var(--card) 92%, var(--accent) 8%), var(--card));
+  display: grid;
+  gap: 12px;
+}
+
+.prompt-starter h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.prompt-starter p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.prompt-starter__eyebrow {
+  margin: 0;
+  color: color-mix(in srgb, var(--accent) 72%, var(--muted));
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prompt-starter__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.prompt-starter__chip {
+  border-radius: 999px;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--card) 85%, var(--accent) 15%);
+  font-size: 12px;
+  padding: 6px 11px;
+}
+
+.prompt-starter__chip--primary {
+  box-shadow: 0 1px 0 color-mix(in srgb, black 18%, transparent);
+}
+
+.prompt-starter__chip:hover {
+  border-color: color-mix(in srgb, var(--accent) 68%, var(--border));
+  transform: translateY(-1px);
+}
+
 /* Chat queue */
 .chat-queue {
   margin-top: 12px;
